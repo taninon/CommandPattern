@@ -19,15 +19,18 @@ public class MoveCommand : ICommand
 	public void Execute()
 	{
 		var SetPos = _player.position;
-		SetPos.y += _v;
-		SetPos.x += _h;
+		SetPos.y += _v * Time.deltaTime;
+		SetPos.x += _h * Time.deltaTime;
 
 		_player.position = SetPos;
 	}
 
 	public void Undo()
 	{
-		throw new System.NotImplementedException();
-	}
+		var SetPos = _player.position;
+		SetPos.y -= _v * Time.deltaTime;
+		SetPos.x -= _h * Time.deltaTime;
 
+		_player.position = SetPos;
+	}
 }
