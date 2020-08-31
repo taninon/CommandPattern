@@ -8,19 +8,21 @@ public class MoveCommand : ICommand
 	private float _v;
 	private float _h;
 	private int _id;
+	private float _speed;
 
-	public MoveCommand(Transform player,float h, float v)
+	public MoveCommand(Transform player,float h, float v,float speed)
 	{
 		_player = player;
 		_v = v;
 		_h = h;
+		_speed = speed;
 	}
 
 	public void Execute()
 	{
 		var SetPos = _player.position;
-		SetPos.y += _v * Time.deltaTime;
-		SetPos.x += _h * Time.deltaTime;
+		SetPos.y += _v * Time.deltaTime * _speed;
+		SetPos.x += _h * Time.deltaTime * _speed;
 
 		_player.position = SetPos;
 	}
@@ -28,8 +30,8 @@ public class MoveCommand : ICommand
 	public void Undo()
 	{
 		var SetPos = _player.position;
-		SetPos.y -= _v * Time.deltaTime;
-		SetPos.x -= _h * Time.deltaTime;
+		SetPos.y -= _v * Time.deltaTime * _speed;
+		SetPos.x -= _h * Time.deltaTime * _speed;
 
 		_player.position = SetPos;
 	}

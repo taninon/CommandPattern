@@ -10,10 +10,10 @@ public class Player : MonoBehaviour
 			return;
 		}
 
-		float h = Input.GetAxis("Horizontal") * _speed;
-		float v = Input.GetAxis("Vertical") * _speed;
+		float h = Input.GetAxis("Horizontal");
+		float v = Input.GetAxis("Vertical");
 
-		var move = new MoveCommand(this.transform,h,v);
+		var move = new MoveCommand(this.transform,h,v,_speed);
 		move.Execute();
 
 		CommandManager.Instance.AddCommand(move);
