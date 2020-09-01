@@ -7,7 +7,6 @@ public class MoveCommand : ICommand
 	private Transform _player;
 	private float _v;
 	private float _h;
-	private int _id;
 	private float _speed;
 
 	public MoveCommand(Transform player,float h, float v,float speed)
