@@ -19,7 +19,43 @@ public class CommandManager : MonoBehaviour
 		}
 	}
 
-	private List<ICommand> _commandBuffer = new List<ICommand>();
+	public class FrameCommand
+	{
+		private List<ICommand> _commandBuffer = new List<ICommand>();
+
+		public IEnumerable<ICommand> CommandBuffer
+		{
+			get
+			{
+				return _commandBuffer;
+			}
+		}
+
+		public void AddCommands(List<ICommand> commands)
+		{
+			_commandBuffer = commands;
+		}
+
+		public void Execute()
+		{
+			foreach (var command in _commandBuffer)
+			{
+				command.Execute();
+			}
+		}
+
+		public void Undo()
+		{
+			foreach (var command in _commandBuffer)
+			{
+				command.Undo();
+			}
+		}
+
+	}
+
+	//	private List<ICommand> _commandBuffer = new List<ICommand>();
+	private List<FrameCommand> _frameCommandBuffer = new List<FrameCommand>();
 
 	public bool Locked;
 
@@ -28,9 +64,12 @@ public class CommandManager : MonoBehaviour
 		_instance = this;
 	}
 
-	public void AddCommand(ICommand command)
+	public void AddCommand(List<ICommand> commands)
 	{
-		_commandBuffer.Add(command);
+		var frameCommand = new FrameCommand();
+		frameCommand.AddCommands(commands);
+
+		_frameCommandBuffer.Add(frameCommand);
 	}
 
 	public void Rewind()
@@ -54,9 +93,9 @@ public class CommandManager : MonoBehaviour
 	private IEnumerator PlayBackCoroutine()
 	{
 		Debug.Log("Playback Start");
-		foreach (var command in _commandBuffer)
+		foreach (var frameCommand in _frameCommandBuffer)
 		{
-			command.Execute();
+			frameCommand.Execute();
 			yield return new WaitForEndOfFrame();
 		}
 		Debug.Log("Playback End");
@@ -67,9 +106,9 @@ public class CommandManager : MonoBehaviour
 	{
 		Debug.Log("Rewind Start");
 		///Listを逆からとる。List.Reverse()はListの中身を変えてしまうのでEnumerable.Reversを使う
-		foreach (var command in Enumerable.Reverse(_commandBuffer))
+		foreach (var frameCommand in Enumerable.Reverse(_frameCommandBuffer))
 		{
-			command.Undo();
+			frameCommand.Undo();
 			yield return new WaitForEndOfFrame();
 		}
 		Debug.Log("Rewind End");
