@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
 			flameCommand.Add(rotate);
 
 		}
-		CommandManager.Instance.AddCommand(flameCommand);
+		CommandManager.Instance.AddCommands(flameCommand);
 	}
 
 }

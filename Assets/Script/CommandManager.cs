@@ -64,7 +64,7 @@ public class CommandManager : MonoBehaviour
 		_instance = this;
 	}
 
-	public void AddCommand(List<ICommand> commands)
+	public void AddCommands(List<ICommand> commands)
 	{
 		var frameCommand = new FrameCommand();
 		frameCommand.AddCommands(commands);
