@@ -54,7 +54,6 @@ public class CommandManager : MonoBehaviour
 
 	}
 
-	//	private List<ICommand> _commandBuffer = new List<ICommand>();
 	private List<FrameCommand> _frameCommandBuffer = new List<FrameCommand>();
 
 	public bool Locked;
